@@ -9,8 +9,8 @@ if __name__ == "__main__":
     engine.set_parameters(
         vt_symbol="IF88.CFFEX",
         interval="1m",
-        start=datetime(2019, 1, 1),
-        end=datetime(2019, 4, 30),
+        start=datetime(2010, 1, 1),
+        end=datetime(2010, 6, 1),
         rate=0.3 / 10000,
         slippage=0.2,
         size=300,
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     setting = OptimizationSetting()
     setting.set_target("sharpe_ratio")
-    setting.add_parameter("atr_length", 3, 39, 1)
-    setting.add_parameter("atr_ma_length", 10, 30, 1)
+    setting.add_parameter("atr_length", 30, 39, 1)
+    setting.add_parameter("atr_ma_length", 20, 30, 1)
 
     engine.run_ga_optimization(setting)

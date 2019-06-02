@@ -25,12 +25,20 @@ SETTINGS = {
     "rqdata.username": "",
     "rqdata.password": "",
 
-    "database.driver": "sqlite",  # see database.Driver
-    "database.database": "database.db",  # for sqlite, use this as filepath
+    # "database.driver": "sqlite",  # see database.Driver
+    # "database.database": "database.db",  # for sqlite, use this as filepath
+    # "database.host": "localhost",
+    # "database.port": 3306,
+    # "database.user": "root",
+    # "database.password": "",
+    # "database.authentication_source": "admin",  # for mongodb
+
+    "database.driver": "mysql",  # see database.Driver
+    "database.database": "elements",  # for sqlite, use this as filepath
     "database.host": "localhost",
     "database.port": 3306,
     "database.user": "root",
-    "database.password": "",
+    "database.password": "sxt910906",
     "database.authentication_source": "admin",  # for mongodb
 }
 

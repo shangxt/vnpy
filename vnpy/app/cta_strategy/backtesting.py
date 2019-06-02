@@ -113,7 +113,8 @@ class BacktestingEngine:
         self.size = 1
         self.pricetick = 0
         self.capital = 1_000_000
-        self.mode = BacktestingMode.BAR
+        #self.mode = BacktestingMode.BAR
+        self.mode = BacktestingMode.TICK
 
         self.strategy_class = None
         self.strategy = None
@@ -176,7 +177,8 @@ class BacktestingEngine:
         pricetick: float,
         capital: int = 0,
         end: datetime = None,
-        mode: BacktestingMode = BacktestingMode.BAR,
+        #mode: BacktestingMode = BacktestingMode.BAR,
+        mode: BacktestingMode = BacktestingMode.TICK,
     ):
         """"""
         self.mode = mode

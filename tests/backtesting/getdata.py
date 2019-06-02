@@ -42,7 +42,7 @@ def download_minute_bar(vt_symbol):
         frequency="1m",
         fields=FIELDS,
         start_date='20100416',
-        end_date='20190416'
+        end_date='20110416'
     )
 
     bars = []

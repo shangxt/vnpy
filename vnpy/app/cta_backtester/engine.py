@@ -355,10 +355,12 @@ class BacktesterEngine(BaseEngine):
             data = self.main_engine.query_history(req, contract.gateway_name)
         # Otherwise use RQData to query data
         else:
-            data = rqdata_client.query_history(req)
+            #data = rqdata_client.query_history(req)
+            data = rqdata_client.query_history_tick(req)
 
         if data:
-            database_manager.save_bar_data(data)
+            #database_manager.save_bar_data(data)
+            database_manager.save_tick_data(data)
             self.write_log(f"{vt_symbol}-{interval}历史数据下载完成")
         else:
             self.write_log(f"数据下载失败，无法获取{vt_symbol}的历史数据")
