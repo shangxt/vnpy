@@ -244,14 +244,14 @@ class BacktestingEngine:
         day_count = 0
         ix = 0
         
-        for ix, data in enumerate(self.history_data):
-            if self.datetime and data.datetime.day != self.datetime.day:
-                day_count += 1
-                if day_count >= self.days:
-                    break
-
-            self.datetime = data.datetime
-            self.callback(data)
+        # for ix, data in enumerate(self.history_data):
+        #     if self.datetime and data.datetime.day != self.datetime.day:
+        #         day_count += 1
+        #         if day_count >= self.days:
+        #             break
+        #
+        #     self.datetime = data.datetime
+        #     self.callback(data)
 
         self.strategy.inited = True
         self.output("策略初始化完成")
