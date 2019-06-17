@@ -265,7 +265,45 @@ class BacktestingEngine:
         start_time = time.time()
 
         # Use the rest of history data for running backtesting
-        for data in self.history_data[ix:]:
+        # for data in self.history_data[ix:]:
+        #     func(data)
+        for ix, row in self.history_data.iterrows():
+            data = TickData(
+                symbol=self.symbol,
+                exchange=self.exchange,
+                datetime=ix,
+                name=self.symbol,
+                volume=row["volume"],
+                last_price=row["last"],
+                last_volume=0.0,
+                limit_up=row["limit_up"],
+                limit_down=row["limit_down"],
+                open_price=row["open"],
+                high_price=row["high"],
+                low_price=row["low"],
+                pre_close=row["prev_close"],
+                bid_price_1=row["b1"],
+                bid_price_2=row["b2"],
+                bid_price_3=row["b3"],
+                bid_price_4=row["b4"],
+                bid_price_5=row["b5"],
+                ask_price_1=row["a1"],
+                ask_price_2=row["a2"],
+                ask_price_3=row["a3"],
+                ask_price_4=row["a4"],
+                ask_price_5=row["a5"],
+                bid_volume_1=row["b1_v"],
+                bid_volume_2=row["b2_v"],
+                bid_volume_3=row["b3_v"],
+                bid_volume_4=row["b4_v"],
+                bid_volume_5=row["b5_v"],
+                ask_volume_1=row["a1_v"],
+                ask_volume_2=row["a2_v"],
+                ask_volume_3=row["a3_v"],
+                ask_volume_4=row["a4_v"],
+                ask_volume_5=row["a5_v"],
+                gateway_name="DB"
+            )
             func(data)
 
         end_time = time.time()
