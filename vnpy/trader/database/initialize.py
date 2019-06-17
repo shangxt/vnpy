@@ -1,11 +1,14 @@
 """"""
 from .database import BaseDatabaseManager, Driver
+from .database_h5 import Hdf5Manager
 
 
 def init(settings: dict) -> BaseDatabaseManager:
     driver = Driver(settings["driver"])
     if driver is Driver.MONGODB:
         return init_nosql(driver=driver, settings=settings)
+    elif driver is Driver.HDF5:
+        return Hdf5Manager(settings["database"])
     else:
         return init_sql(driver=driver, settings=settings)
 

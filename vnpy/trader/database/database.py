@@ -13,6 +13,7 @@ class Driver(Enum):
     MYSQL = "mysql"
     POSTGRESQL = "postgresql"
     MONGODB = "mongodb"
+    HDF5 = "hdf5"
 
 
 class BaseDatabaseManager(ABC):

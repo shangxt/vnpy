@@ -57,7 +57,7 @@ class BacktesterEngine(BaseEngine):
 
         self.write_log("策略文件加载完成")
 
-        self.init_rqdata()
+        #self.init_rqdata()
 
     def init_rqdata(self):
         """
@@ -157,6 +157,8 @@ class BacktesterEngine(BaseEngine):
         engine.load_data()
         engine.run_backtesting()
         self.result_df = engine.calculate_result()
+        if self.result_df is not None:
+            self.result_df.to_csv("pnl.csv")
         self.result_statistics = engine.calculate_statistics(output=False)
 
         # Clear thread object handler.
@@ -356,12 +358,16 @@ class BacktesterEngine(BaseEngine):
         # Otherwise use RQData to query data
         else:
             #data = rqdata_client.query_history(req)
-            data = rqdata_client.query_history_tick(req)
+            #data = rqdata_client.query_history_tick(req)
+            data = rqdata_client.query_history_tick_df(req)
 
-        if data:
-            #database_manager.save_bar_data(data)
-            database_manager.save_tick_data(data)
+        if not data.empty:
             self.write_log(f"{vt_symbol}-{interval}历史数据下载完成")
+            #database_manager.save_bar_data(data)
+            if database_manager.save_tick_data(data):
+                self.write_log(f"{vt_symbol}-{interval}历史数据保存完成")
+            else:
+                self.write_log(f"{vt_symbol}-{interval}历史数据保存失败")
         else:
             self.write_log(f"数据下载失败，无法获取{vt_symbol}的历史数据")
 

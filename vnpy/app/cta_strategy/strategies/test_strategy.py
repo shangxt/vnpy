@@ -64,19 +64,23 @@ class TestStrategy(CtaTemplate):
         self.last_tick = tick
 
         self.tick_count += 1
-        if self.tick_count >= self.test_trigger:
-            self.tick_count = 0
-
-            if self.test_funcs:
-                test_func = self.test_funcs.pop(0)
-
-                start = time()
-                test_func()
-                time_cost = (time() - start) * 1000
-                self.write_log("耗时%s毫秒" % (time_cost))
-            else:
-                self.write_log("测试已全部完成")
-                self.test_all_done = True
+        # if self.tick_count >= self.test_trigger:
+        #     self.tick_count = 0
+        #
+        #     if self.test_funcs:
+        #         test_func = self.test_funcs.pop(0)
+        #
+        #         start = time()
+        #         test_func()
+        #         time_cost = (time() - start) * 1000
+        #         self.write_log("耗时%s毫秒" % (time_cost))
+        #     else:
+        #         self.write_log("测试已全部完成")
+        #         self.test_all_done = True
+        # 测试下单
+        if self.tick_count == self.test_trigger:
+            self.test_market_order()
+            self.test_all_done = True
 
         self.put_event()
 

@@ -6,6 +6,7 @@ from functools import lru_cache
 from time import time
 import multiprocessing
 import random
+import time
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -212,6 +213,7 @@ class BacktestingEngine:
     def load_data(self):
         """"""
         self.output("开始加载历史数据")
+        start_time = time.time()
 
         if self.mode == BacktestingMode.BAR:
             self.history_data = load_bar_data(
@@ -229,7 +231,8 @@ class BacktestingEngine:
                 self.end
             )
 
-        self.output(f"历史数据加载完成，数据量：{len(self.history_data)}")
+        end_time = time.time()
+        self.output(f"历史数据加载完成，数据量：{len(self.history_data)}，用时:{end_time-start_time}s")
 
     def run_backtesting(self):
         """"""
@@ -259,16 +262,19 @@ class BacktestingEngine:
         self.strategy.on_start()
         self.strategy.trading = True
         self.output("开始回放历史数据")
+        start_time = time.time()
 
         # Use the rest of history data for running backtesting
         for data in self.history_data[ix:]:
             func(data)
 
-        self.output("历史数据回放结束")
+        end_time = time.time()
+        self.output(f"历史数据回放结束，用时：{end_time - start_time}s")
 
     def calculate_result(self):
         """"""
         self.output("开始计算逐日盯市盈亏")
+        start_time = time.time()
 
         if not self.trades:
             self.output("成交记录为空，无法计算")
@@ -276,8 +282,8 @@ class BacktestingEngine:
 
         # Add trade data into daily reuslt.
         for trade in self.trades.values():
-            d = trade.datetime.date()
-            daily_result = self.daily_results[d]
+            dt = trade.datetime
+            daily_result = self.daily_results[dt]
             daily_result.add_trade(trade)
 
         # Calculate daily result by iteration.
@@ -301,12 +307,14 @@ class BacktestingEngine:
 
         self.daily_df = DataFrame.from_dict(results).set_index("date")
 
-        self.output("逐日盯市盈亏计算完成")
+        end_time = time.time()
+        self.output(f"逐日盯市盈亏计算完成，用时：{end_time - start_time}s")
         return self.daily_df
 
     def calculate_statistics(self, df: DataFrame = None, output=True):
         """"""
         self.output("开始计算策略统计指标")
+        start_time = time.time()
 
         if not df:
             df = self.daily_df
@@ -450,6 +458,8 @@ class BacktestingEngine:
             "return_drawdown_ratio": return_drawdown_ratio,
         }
 
+        end_time = time.time()
+        self.output(f"策略统计指标计算完成，用时:{end_time-start_time}s")
         return statistics
 
     def show_chart(self, df: DataFrame = None):
@@ -658,13 +668,13 @@ class BacktestingEngine:
 
     def update_daily_close(self, price: float):
         """"""
-        d = self.datetime.date()
+        dt = self.datetime
 
-        daily_result = self.daily_results.get(d, None)
+        daily_result = self.daily_results.get(dt, None)
         if daily_result:
             daily_result.close_price = price
         else:
-            self.daily_results[d] = DailyResult(d, price)
+            self.daily_results[dt] = DailyResult(dt, price)
 
     def new_bar(self, bar: BarData):
         """"""

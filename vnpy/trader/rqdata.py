@@ -216,6 +216,41 @@ class RqdataClient:
 
         return data
 
+    def query_history_tick_df(self, req: HistoryRequest):
+        """
+        Query history tick data from RQData. return Pandas.DataFrame
+        """
+        symbol = req.symbol
+        exchange = req.exchange
+        interval = req.interval
+        start = req.start
+        end = req.end
+
+        rq_symbol = self.to_rq_symbol(symbol, exchange)
+        if rq_symbol not in self.symbols:
+            return None
+
+        rq_interval = INTERVAL_VT2RQ.get(interval)
+        if not rq_interval:
+            return None
+        # hard code: download tick data
+        rq_interval = "tick"
+
+        # For adjust timestamp from bar close point (RQData) to open point (VN Trader)
+        adjustment = INTERVAL_ADJUSTMENT_MAP[interval]
+
+        # For querying night trading period data
+        end += timedelta(1)
+
+        df = rqdata_get_price(
+            rq_symbol,
+            frequency=rq_interval,
+            # fields=["open", "high", "low", "close", "volume"],
+            start_date=start,
+            end_date=end
+        )
+        return df
+
 
 rqdata_client = RqdataClient()
 

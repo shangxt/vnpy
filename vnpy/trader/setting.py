@@ -33,18 +33,21 @@ SETTINGS = {
     # "database.password": "",
     # "database.authentication_source": "admin",  # for mongodb
 
-    "database.driver": "mysql",  # see database.Driver
-    "database.database": "elements",  # for sqlite, use this as filepath
-    "database.host": "localhost",
-    "database.port": 3306,
-    "database.user": "root",
-    "database.password": "sxt910906",
-    "database.authentication_source": "admin",  # for mongodb
+    # "database.driver": "mysql",  # see database.Driver
+    # "database.database": "elements",  # for sqlite, use this as filepath
+    # "database.host": "localhost",
+    # "database.port": 3306,
+    # "database.user": "root",
+    # "database.password": "sxt910906",
+    # "database.authentication_source": "admin",  # for mongodb
+
+    "database.driver": "hdf5",
+    "database.database": "F:\\vnpy\\elements.h5",
 }
 
 # Load global setting from json file.
 SETTING_FILENAME = "vt_setting.json"
-SETTINGS.update(load_json(SETTING_FILENAME))
+# SETTINGS.update(load_json(SETTING_FILENAME))
 
 
 def get_settings(prefix: str = ""):
